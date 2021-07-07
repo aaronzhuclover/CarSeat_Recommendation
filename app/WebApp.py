@@ -27,7 +27,9 @@ from nltk.stem import PorterStemmer
 # start the App
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 external_stylesheets = [dbc.themes.BOOTSTRAP]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, 
+    external_stylesheets=external_stylesheets,
+    meta_tags=[{'name': 'google-site-verification', 'content': 'Wu9uTwrweStHxNoL-YC1uBmrsXYFNjRCqmSQ8nNnNMs'}])
 app.title = 'Car Seat Recommendation'
 server = app.server
 
@@ -40,7 +42,7 @@ with open('data_light.pickle', 'rb') as f:
 keywords = ['Lightweight', 'Comfortable', 'Stylish', 'Safe', 'Newborn-Fridendly', 'Easy-to-Install', 'Easy-to-Clean', 'Easy-to-Adjust', 'Sturdy', 'Spacious']
 keywords_raw = ['lightweight', 'comfortable', 'stylish', 'safe', 'newborn', 'install', 'clean', 'adjust', 'sturdy', 'spacious']
 
-def top_3(preference):
+def top_prod(preference):
     loc = []
     for i, j in enumerate(keywords):
         if j in preference:
@@ -158,11 +160,11 @@ app.layout = html.Div([
     State('features-input', 'value')])
 def recommendation_system(n_clicks, features):
     if len(features)==0:
-        return 'Note: Please select up to 3 features.', {}, {}, {}, {}, {}, {}
-    elif len(features)>3:
-        return 'Note: Please select between 1 to 3 features.', {}, {}, {}, {}, {}, {}
+        return 'Note: Please select up to 5 features.', {}, {}, {}, {}, {}, {}
+    elif len(features)>5:
+        return 'Note: Please select between 1 to 5 features.', {}, {}, {}, {}, {}, {}
     else:
-        df, loc = top_3(features)
+        df, loc = top_prod(features)
         keywords_sel = [keywords[i-1] for i in loc]
         asins = df['asin'].unique().tolist()
         print(keywords_sel, asins)    
